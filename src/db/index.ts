@@ -191,12 +191,16 @@ CREATE TABLE IF NOT EXISTS stock_history (
 `;
 
 try {
-  const dbUrl = process.env.USE_REMOTE_DB && process.env.TURSO_CONNECTION_URL
-    ? process.env.TURSO_CONNECTION_URL
-    : 'file:local.db';
+  const isBlockedSandboxUrl = process.env.TURSO_CONNECTION_URL?.includes('db-4d39cf09');
+  const hasCustomRemoteUrl = Boolean(
+    process.env.TURSO_CONNECTION_URL &&
+    !isBlockedSandboxUrl &&
+    !process.env.TURSO_CONNECTION_URL.startsWith('file:')
+  );
+  const dbUrl = hasCustomRemoteUrl ? process.env.TURSO_CONNECTION_URL! : 'file:local.db';
   const client = createClient({
     url: dbUrl,
-    authToken: process.env.USE_REMOTE_DB ? process.env.TURSO_AUTH_TOKEN : undefined,
+    authToken: hasCustomRemoteUrl ? process.env.TURSO_AUTH_TOKEN : undefined,
   });
 
   // If local sqlite file, run initial schema setup
