@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { bookings } from '@/db/schema';
-import { eq, like, or, and, desc, gte, lte, inArray, sql } from 'drizzle-orm';
+import { eq, ilike, or, and, desc, gte, lte, inArray, sql } from 'drizzle-orm';
 
 export async function GET(request: NextRequest) {
   try {
@@ -48,8 +48,8 @@ export async function GET(request: NextRequest) {
     if (search) {
       conditions.push(
         or(
-          like(bookings.customerName, `%${search}%`),
-          like(bookings.customerPhone, `%${search}%`)
+          ilike(bookings.customerName, `%${search}%`),
+          ilike(bookings.customerPhone, `%${search}%`)
         )
       );
     }
@@ -408,7 +408,7 @@ export async function DELETE(request: NextRequest) {
       }
 
       // Count records before deletion
-      let countQuery = db.select({ count: sql<number>`count(*)` }).from(bookings);
+      let countQuery = db.select({ count: sql<number>`count(*)::int` }).from(bookings);
       if (conditions.length > 0) {
         countQuery = countQuery.where(conditions.length === 1 ? conditions[0] : and(...conditions));
       }

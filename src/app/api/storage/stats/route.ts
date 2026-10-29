@@ -6,10 +6,10 @@ import { sql } from 'drizzle-orm';
 export async function GET(request: NextRequest) {
   try {
     // Get counts for all tables
-    const [salesCount] = await db.select({ count: sql<number>`COUNT(*)` }).from(salesBills);
-    const [rentalCount] = await db.select({ count: sql<number>`COUNT(*)` }).from(rentalBills);
-    const [productsCount] = await db.select({ count: sql<number>`COUNT(*)` }).from(products);
-    const [customersCount] = await db.select({ count: sql<number>`COUNT(*)` }).from(customers);
+    const [salesCount] = await db.select({ count: sql<number>`COUNT(*)::int` }).from(salesBills);
+    const [rentalCount] = await db.select({ count: sql<number>`COUNT(*)::int` }).from(rentalBills);
+    const [productsCount] = await db.select({ count: sql<number>`COUNT(*)::int` }).from(products);
+    const [customersCount] = await db.select({ count: sql<number>`COUNT(*)::int` }).from(customers);
 
     // Estimate storage size (rough calculation)
     // Each bill record averages ~2KB, products ~0.5KB, customers ~0.3KB

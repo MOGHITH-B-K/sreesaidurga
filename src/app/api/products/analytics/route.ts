@@ -7,33 +7,33 @@ export async function GET(request: NextRequest) {
   try {
     // 1. Total products count
     const totalProductsResult = await db
-      .select({ count: sql<number>`count(*)` })
+      .select({ count: sql<number>`count(*)::int` })
       .from(products);
     const totalProducts = Number(totalProductsResult[0]?.count || 0);
 
     // 2. Total sales products count
     const salesProductsResult = await db
-      .select({ count: sql<number>`count(*)` })
+      .select({ count: sql<number>`count(*)::int` })
       .from(products)
       .where(eq(products.productType, 'sales'));
     const salesProducts = Number(salesProductsResult[0]?.count || 0);
 
     // 3. Total rental products count
     const rentalProductsResult = await db
-      .select({ count: sql<number>`count(*)` })
+      .select({ count: sql<number>`count(*)::int` })
       .from(products)
       .where(eq(products.productType, 'rental'));
     const rentalProducts = Number(rentalProductsResult[0]?.count || 0);
 
     // 4. Sum of all totalSales
     const totalSalesResult = await db
-      .select({ sum: sql<number>`COALESCE(sum(${products.totalSales}), 0)` })
+      .select({ sum: sql<number>`COALESCE(sum(${products.totalSales}), 0)::int` })
       .from(products);
     const totalSalesCount = Number(totalSalesResult[0]?.sum || 0);
 
     // 5. Sum of all totalRentals
     const totalRentalsResult = await db
-      .select({ sum: sql<number>`COALESCE(sum(${products.totalRentals}), 0)` })
+      .select({ sum: sql<number>`COALESCE(sum(${products.totalRentals}), 0)::int` })
       .from(products);
     const totalRentalsCount = Number(totalRentalsResult[0]?.sum || 0);
 
@@ -69,14 +69,14 @@ export async function GET(request: NextRequest) {
 
     // 8. Low stock count (stockQuantity < minStockLevel)
     const lowStockResult = await db
-      .select({ count: sql<number>`count(*)` })
+      .select({ count: sql<number>`count(*)::int` })
       .from(products)
       .where(sql`${products.stockQuantity} < ${products.minStockLevel}`);
     const lowStockCount = Number(lowStockResult[0]?.count || 0);
 
     // 9. Out of stock count (stockQuantity = 0)
     const outOfStockResult = await db
-      .select({ count: sql<number>`count(*)` })
+      .select({ count: sql<number>`count(*)::int` })
       .from(products)
       .where(eq(products.stockQuantity, 0));
     const outOfStockCount = Number(outOfStockResult[0]?.count || 0);

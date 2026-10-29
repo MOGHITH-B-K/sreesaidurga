@@ -8,11 +8,11 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   try {
     // Get counts for all tables
-    const [salesCount] = await db.select({ count: sql<number>`count(*)` }).from(salesBills);
-    const [rentalCount] = await db.select({ count: sql<number>`count(*)` }).from(rentalBills);
-    const [productCount] = await db.select({ count: sql<number>`count(*)` }).from(products);
-    const [customerCount] = await db.select({ count: sql<number>`count(*)` }).from(customers);
-    const [bookingCount] = await db.select({ count: sql<number>`count(*)` }).from(calendarBookings);
+    const [salesCount] = await db.select({ count: sql<number>`count(*)::int` }).from(salesBills);
+    const [rentalCount] = await db.select({ count: sql<number>`count(*)::int` }).from(rentalBills);
+    const [productCount] = await db.select({ count: sql<number>`count(*)::int` }).from(products);
+    const [customerCount] = await db.select({ count: sql<number>`count(*)::int` }).from(customers);
+    const [bookingCount] = await db.select({ count: sql<number>`count(*)::int` }).from(calendarBookings);
 
     // Calculate estimated storage (approximate)
     const avgBillSize = 2; // KB per bill (approximate)

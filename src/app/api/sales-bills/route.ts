@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { salesBills, products } from '@/db/schema';
-import { eq, like, or, and, desc, gte, lte, sql } from 'drizzle-orm';
+import { eq, ilike, or, and, desc, gte, lte, sql } from 'drizzle-orm';
 
 export async function GET(request: NextRequest) {
   try {
@@ -58,8 +58,8 @@ export async function GET(request: NextRequest) {
     if (search) {
       conditions.push(
         or(
-          like(salesBills.customerName, `%${search}%`),
-          like(salesBills.customerPhone, `%${search}%`)
+          ilike(salesBills.customerName, `%${search}%`),
+          ilike(salesBills.customerPhone, `%${search}%`)
         )
       );
     }

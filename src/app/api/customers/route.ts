@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { customers } from '@/db/schema';
-import { eq, like, or } from 'drizzle-orm';
+import { eq, ilike, or } from 'drizzle-orm';
 
 export async function GET(request: NextRequest) {
   try {
@@ -16,9 +16,9 @@ export async function GET(request: NextRequest) {
       const searchTerm = `%${search}%`;
       query = query.where(
         or(
-          like(customers.name, searchTerm),
-          like(customers.phone, searchTerm),
-          like(customers.address, searchTerm)
+          ilike(customers.name, searchTerm),
+          ilike(customers.phone, searchTerm),
+          ilike(customers.address, searchTerm)
         )
       );
     }

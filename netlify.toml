@@ -12,8 +12,6 @@
   package = "@netlify/plugin-nextjs"
 
 # Environment variables that need to be set in Netlify UI:
-# - TURSO_DATABASE_URL
-# - TURSO_AUTH_TOKEN
 # - BETTER_AUTH_SECRET
 # - BETTER_AUTH_URL (set to your Netlify site URL)
 
